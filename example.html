@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+
+<script type="text/javascript" src="js/mootools.js"></script>
+<script type="text/javascript" src="js/mooprompt.js"></script>
+
+
+	<style type="text/css">
+		* {margin:0; padding:0;}
+		html {font-size:62.5%; font-family: verdana, arial;}
+		input {font-size:1em; font-family: verdana, arial; margin: 5px;}
+		.cbOverlay {
+			background-color: #000;
+		}
+		
+		.cbContainer {
+			padding:5px;
+			background-color:white;
+			
+		}
+		.cbBox h3 {
+			font-size:1.4em;
+			margin:2px;
+			background-color:#ccc;
+		}
+		.cbBox p {
+			margin:3px;
+		}
+		.cbBox .cbButtons {
+			text-align:center;
+		}
+				
+		li {margin:1ex 0 1ex 2em;}
+		#examples li {
+			cursor:pointer;
+			text-decoration:underline;
+		}
+		pre {font-family: monospace;
+			border:1px solid #ccc;
+			height:300px;
+			overflow:auto;
+			font-size:1.2em;
+			background-color:#eee;
+			min-width:600px;
+		}
+		.closeButton {
+			position:absolute;
+			top:10px;
+			right:10px;
+		}
+	</style>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>mooPrompt</title>
+</head><body>
+<ul id="examples">	
+	<table width="100%" border="0">
+      <tbody><tr>
+        <td>
+		<li id="box1">Notice box</li>
+		<li id="box2">Yes/No box</li>
+		<li id="box3">Yes/No/Cancel box</li>
+		<li id="boxHtml">HTML element - Login form</li>
+		<li id="boxHtml2">HTML element + Img button - Report form</li>
+		</td>
+        <td>
+		<li id="box4">Slide - Top Left</li>
+		<li id="box5">Slide - Top Center</li>
+		<li id="box6">Slide - Top Right</li>
+		<li id="box7">Slide - Middle Left</li>
+		<li id="box8">Slide - Middle Center</li>
+		</td>
+        <td>
+		<li id="box9">Slide - Middle Right</li>
+		<li id="box10">Slide - Bottom Left</li>
+		<li id="box11">Slide - Bottom Center</li>
+		<li id="box12">Slide - Bottom Right</li>
+		</td>
+		<td>
+		Credits:
+		<p class="credits">
+			mooPrompt v.0.14<br>
+			�crazydave - <a href="http://www.clanccc.co.uk/box/box.html" rel="external">http://forum.mootools.net/topic.php?id=421</a><br>
+			Feel free to use and modify but please provide credits in source.<br>
+		</p>
+		</td>
+      </tr>
+    </tbody></table>
+
+
+
+
+
+
+	</ul>
+<script type="text/javascript">
+		
+		$('box1').onclick = function() {
+				var boxA = new MooPrompt('Notice', 'This is a simple notice box', {
+					buttons: 1,
+					width:200,
+					button1: 'Okay',
+					onButton1: function() {
+						window.status = 'You just clicked okay.';
+					}
+				});
+			};
+			$('box2').onclick = function() {
+				var boxB = new MooPrompt('Yes or No?', 'Please click either yes or no. lots of test text just to fill the box out a bit so I think I will just rattle on for a bit about nothing really just so there is lots of pointless text contained within this box thingy.', {
+					buttons: 2,
+					width:150,
+					height:100,
+					button1: 'Yes',
+					button2: 'No',
+					onButton1: function() {
+						window.status = 'You just clicked yes.';
+					},
+					onButton2: function() {
+						window.status = 'You just clicked no.';
+					}
+				});
+			};
+			$('box3').onclick = function() {
+				var boxC = new MooPrompt('Yes, No and Cancel', 'This box also has a close delay of 5 seconds... Here you have the choice of either yes, no or cancel.', {
+					buttons: 3,
+					width:200,
+					button1: 'Yes',
+					button2: 'No',
+					button3: 'Cancel',
+					onButton1: function() {
+						window.status = 'You just clicked yes.';
+					},
+					onButton2: function() {
+						window.status = 'You just clicked no.';
+					},
+					onButton3: function() {
+						window.status = 'You just clicked cancel.';
+					},
+					delay: 5000
+				});
+			};
+			$('boxHtml').onclick = function() {
+				var userForm = new Element('form').setProperties({
+					'action': 'box.html',
+					'method': 'post',
+					'id': 'loginForm'
+				});
+				userForm.innerHTML = 'Username<br /><input type="text" name="username" id="username" /><br />Password<br /><input type="password" name="password" id="password" />';
+				var boxHtml = new MooPrompt('Login prompt', userForm, {
+					buttons: 2,
+					button1: 'Login',
+					button2: 'Cancel',
+					onButton1: function() {
+						window.status = 'The form would have submitted Username: '+$('username').value+' Password: '+$('password').value;
+					}
+				});
+			};
+			$('boxHtml2').onclick = function() {
+				var userForm = new Element('form').setProperties({
+					'action': 'box.html',
+					'method': 'post',
+					'id': 'reportForm'
+				});
+				userForm.innerHTML = '<textarea style="width:290px;" rows="5" cols="50" name="report" id="report"></textarea>';
+				imgButton = new Element('img').setProperties({
+					'src': 'images/x.png',
+					'height' : 9,
+					'width': 9,
+					'class': 'closeButton'
+				});
+				var boxHtml = new MooPrompt('Login prompt', userForm, {
+					buttons: 3,
+					button1: 'Report',
+					button2: 'Cancel',
+					button3: imgButton,
+					onButton1: function() {
+						window.status = 'The form would have submitted report: '+$('report').value;
+					}
+				});
+			};
+			$('box4').onclick = function() {
+				var boxD = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'left', vertical: 'top', effect:'slide'
+				});
+			};
+			$('box5').onclick = function() {
+				var boxE = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'center', vertical: 'top', effect:'slide'
+				});
+			};
+			$('box6').onclick = function() {
+				var boxF = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'right', vertical: 'top', effect:'slide'
+				});
+			};
+			$('box7').onclick = function() {
+				var boxG = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'left', vertical: 'middle', effect:'slide'
+				});
+			};
+			$('box8').onclick = function() {
+				var boxH = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'center', vertical: 'middle', effect:'slide'
+				});
+			};
+			$('box9').onclick = function() {
+				var boxI = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'right', vertical: 'middle', effect:'slide'
+				});
+			};
+			$('box10').onclick = function() {
+				var boxJ = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'left', vertical: 'bottom', effect:'slide'
+				});
+			};
+			$('box11').onclick = function() {
+				var boxK = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'center', vertical: 'bottom', effect:'slide'
+				});
+			};
+			$('box12').onclick = function() {
+				var boxL = new MooPrompt('Testing...', 'Mootools is great, I love it to bits.. blah blah blah...', {
+					buttons: 1, horizontal: 'right', vertical: 'bottom', effect:'slide'
+				});
+			};
+	</script>
+</body></html>
